@@ -22,6 +22,7 @@ pub struct App {
 pub enum AppState {
     Running,
     Closing,
+    Paused,
 }
 
 impl Default for App {
@@ -35,15 +36,18 @@ impl Default for App {
 
 impl App {
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        while self.state == AppState::Running {
+        while self.state != AppState::Closing {
+            if self.state == AppState::Running {
+                self.run_systems();
+                self.state = AppState::Paused
+            } else {
+                self.handle_events()?;
+            }
+
             terminal.draw(|frame| self.render(frame))?;
-            self.run_systems();
-            self.handle_events()?;
         }
-        match self.state {
-            AppState::Closing => Ok(()),
-            AppState::Running => unreachable!(),
-        }
+
+        Ok(())
     }
 
     pub fn render(&self, frame: &mut Frame) {

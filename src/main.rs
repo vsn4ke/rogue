@@ -41,16 +41,17 @@ fn main() -> Result<()> {
 
     app.world
         .create_entity()
-        .with(player_position)
         .with(Renderable {
             glyph: '@',
             fg: Color::Black,
             bg: Color::Red,
         })
+        .with(Position::from_point(player_position))
         .with(Player)
         .with(Viewshed::new(8))
         .build();
 
+    app.world.insert(player_position);
     app.world.insert(map);
     app.run(terminal)?;
     ratatui::restore();

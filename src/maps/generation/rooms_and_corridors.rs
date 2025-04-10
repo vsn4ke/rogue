@@ -1,8 +1,7 @@
-use crate::components::Position;
 use crate::maps::{Map, Orientation};
-use crate::utils::{Rect, Rng};
+use crate::utils::{Point, Rect, Rng};
 
-pub fn rooms_and_corridors(max_rooms: i32, min_size: i32, max_size: i32) -> (Position, Map) {
+pub fn rooms_and_corridors(max_rooms: i32, min_size: i32, max_size: i32) -> (Point, Map) {
     let mut map = Map::default();
     let mut rng = Rng::random_seed();
 
@@ -43,5 +42,5 @@ pub fn rooms_and_corridors(max_rooms: i32, min_size: i32, max_size: i32) -> (Pos
         }
     }
 
-    (map.rooms[0].center_position(), map)
+    (map.rooms[0].center_point(), map)
 }
