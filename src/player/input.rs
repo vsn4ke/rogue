@@ -8,7 +8,7 @@ use crate::app::{App, AppState};
 use super::try_move_player;
 
 pub fn player_input(app: &mut App) -> Result<()> {
-    if event::poll(Duration::from_millis(50))? {
+    if event::poll(Duration::from_millis(200))? {
         match event::read()? {
             Event::Key(event) if event.kind == KeyEventKind::Press => match event.code {
                 KeyCode::Esc | KeyCode::Char('q') => {

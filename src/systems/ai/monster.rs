@@ -20,7 +20,7 @@ impl<'a> System<'a> for MonsterAI {
 
         for (viewshed, _position, _) in (&viewsheds, &positions, &monsters).join() {
             if viewshed.visible_tiles.contains(&player_position) {
-                println!("Monster considers their on existence.");
+                //println!("Monster considers their on existence.");
             }
         }
     }
