@@ -23,7 +23,7 @@ fn main() -> Result<()> {
     app.world.register::<Monster>();
     //app.world.register::<>();
 
-    let (player_position, map) = rooms_and_corridors(20, 6, 10);
+    let (player_point, map) = rooms_and_corridors(20, 6, 10);
     //tmp: insert entities in rooms
     for room in map.rooms.iter().skip(1) {
         app.world
@@ -41,16 +41,17 @@ fn main() -> Result<()> {
 
     app.world
         .create_entity()
-        .with(player_position)
         .with(Renderable {
             glyph: '@',
             fg: Color::Black,
             bg: Color::Red,
         })
+        .with(Position::from_point(player_point))
         .with(Player)
         .with(Viewshed::new(8))
         .build();
 
+    app.world.insert(player_point);
     app.world.insert(map);
     app.run(terminal)?;
     ratatui::restore();

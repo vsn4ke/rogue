@@ -32,6 +32,11 @@ impl Rect {
         let (x, y) = self.center();
         Position { x, y }
     }
+
+    pub fn center_point(&self) -> Point {
+        let (x, y) = self.center();
+        Point { x, y }
+    }
 }
 
 #[derive(PartialEq, Eq, Hash, Clone, Copy)]

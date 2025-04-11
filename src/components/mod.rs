@@ -3,12 +3,23 @@ use specs::prelude::*;
 use specs_derive::Component;
 pub use units::*;
 
+use crate::utils::Point;
+
 pub mod units;
 
 #[derive(Component, Clone, Copy)]
 pub struct Position {
     pub x: i32,
     pub y: i32,
+}
+
+impl Position {
+    pub fn from_point(point: Point) -> Self {
+        Self {
+            x: point.x,
+            y: point.y,
+        }
+    }
 }
 
 #[derive(Component, Clone, Copy)]
