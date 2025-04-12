@@ -48,9 +48,10 @@ impl Tile {
     }
 
     pub fn is_opaque(&self) -> bool {
-        match self.kind {
-            TileKind::Wall => true,
-            _ => false,
-        }
+        matches!(self.kind, TileKind::Wall)
+    }
+
+    pub fn block_path(&self) -> bool {
+        matches!(self.kind, TileKind::Wall)
     }
 }

@@ -39,13 +39,16 @@ impl Rect {
     }
 }
 
-#[derive(PartialEq, Eq, Hash, Clone, Copy)]
+#[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
 }
 
 impl Point {
+    pub fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
+    }
     pub fn from_position(pos: Position) -> Self {
         Self { x: pos.x, y: pos.y }
     }
@@ -56,6 +59,10 @@ impl Point {
 
     pub fn to_xy(self) -> (i32, i32) {
         (self.x, self.y)
+    }
+
+    pub fn distance_to(self, p: Point) -> i32 {
+        (self.x - p.x).abs() + (self.y - p.y).abs()
     }
 }
 

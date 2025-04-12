@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use specs::prelude::*;
 use specs_derive::Component;
 
@@ -25,3 +27,20 @@ impl Viewshed {
 
 #[derive(Component)]
 pub struct Monster;
+
+#[derive(Component)]
+pub struct Name {
+    pub name: String,
+}
+
+impl Name {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self { name: name.into() }
+    }
+}
+
+impl Display for Name {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}

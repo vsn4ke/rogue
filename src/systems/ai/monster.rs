@@ -1,7 +1,7 @@
 use specs::prelude::*;
 
 use crate::{
-    components::{Monster, Position, Viewshed},
+    components::{Monster, Name, Position, Viewshed},
     utils::Point,
 };
 
@@ -13,14 +13,16 @@ impl<'a> System<'a> for MonsterAI {
         ReadStorage<'a, Viewshed>,
         ReadStorage<'a, Position>,
         ReadStorage<'a, Monster>,
+        ReadStorage<'a, Name>,
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (player_position, viewsheds, positions, monsters) = data;
+        let (player_position, viewsheds, positions, monsters, name) = data;
 
-        for (viewshed, _position, _) in (&viewsheds, &positions, &monsters).join() {
+        for (viewshed, _position, _, name) in (&viewsheds, &positions, &monsters, &name).join() {
             if viewshed.visible_tiles.contains(&player_position) {
-                //println!("Monster considers their on existence.");
+                // todo log instead of println
+                println!("{name} shouts insults.");
             }
         }
     }

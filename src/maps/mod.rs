@@ -1,7 +1,7 @@
-pub mod generation;
+pub mod builder;
 pub mod tile;
 
-pub use generation::*;
+pub use builder::*;
 pub use tile::*;
 
 use crate::{
@@ -80,6 +80,31 @@ impl Map {
     pub fn clear_visibility(&mut self) {
         for i in 0..(self.width * self.height) as usize {
             self.tiles[i].visible = false;
+        }
+    }
+
+    pub fn get_exits_from(&self, p: Point) -> Vec<Point> {
+        let mut points = Vec::new();
+
+        let delta = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+
+        for (dx, dy) in delta.iter() {
+            if let Some(p) = self.get_available_exit(p.x + dx, p.y + dy) {
+                points.push(p);
+            } else {
+                continue;
+            }
+        }
+
+        points
+    }
+
+    fn get_available_exit(&self, x: i32, y: i32) -> Option<Point> {
+        let index = self.xy_to_index(x, y);
+        if self.is_inbound(x, y) && !self.tiles[index].block_path() {
+            Some(Point::from_xy(x, y))
+        } else {
+            None
         }
     }
 }
