@@ -14,11 +14,11 @@ use crate::{
     utils::Point,
 };
 
-use super::DrawableComponent;
+use super::Drawable;
 
 pub struct MainTab;
 
-impl DrawableComponent for MainTab {
+impl Drawable for MainTab {
     fn draw(&self, frame: &mut Frame, rect: Rect, world: &mut World) -> Result<()> {
         const CAMERA_WIDTH: i32 = 60;
         const CAMERA_HEIGHT: i32 = 30;

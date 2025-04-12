@@ -3,12 +3,13 @@ use crate::systems::Visibility;
 use crate::systems::monster::MonsterAI;
 use color_eyre::Result;
 use color_eyre::eyre::bail;
+use drawable::bars::{BottomBar, TopBar};
+use drawable::{Drawable, MainTab};
 use ratatui::layout::{Constraint, Direction, Layout};
 use ratatui::{DefaultTerminal, Frame};
 use specs::prelude::*;
-use tabs::{DrawableComponent, MainTab};
 
-pub mod tabs;
+pub mod drawable;
 
 pub const TERMINAL_WIDTH: i32 = 80;
 pub const TERMINAL_HEIGHT: i32 = 50;
@@ -18,6 +19,8 @@ pub struct App {
     pub world: World,
     pub tab: usize,
     pub main_tab: MainTab,
+    pub top_bar: TopBar,
+    pub bottom_bar: BottomBar,
 }
 
 #[derive(PartialEq)]
@@ -32,8 +35,13 @@ impl Default for App {
         App {
             state: AppState::Running,
             world: World::new(),
-            tab: 0,
+            tab: 1,
             main_tab: MainTab,
+            top_bar: TopBar {
+                tab_list: vec!["main tab".into(), "second tab".into(), "third tab".into()],
+                selected_tab: 1,
+            },
+            bottom_bar: BottomBar,
         }
     }
 }
@@ -70,10 +78,17 @@ impl App {
             ])
             .split(frame_size);
 
+        self.top_bar.selected_tab = self.tab;
+
+        self.top_bar.draw(frame, chunks_main[0], &mut self.world)?;
+
         match self.tab {
-            0 => self.main_tab.draw(frame, chunks_main[1], &mut self.world)?,
+            1 => self.main_tab.draw(frame, chunks_main[1], &mut self.world)?,
             _ => bail!("unknow tab"),
         }
+
+        self.bottom_bar
+            .draw(frame, chunks_main[2], &mut self.world)?;
 
         Ok(())
     }
