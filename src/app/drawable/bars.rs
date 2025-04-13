@@ -4,6 +4,8 @@ use ratatui::{
     text::{Line, Span, Text},
 };
 
+use crate::app::App;
+
 use super::Drawable;
 
 pub struct TopBar {
@@ -16,7 +18,7 @@ impl Drawable for TopBar {
         &self,
         frame: &mut ratatui::Frame,
         rect: ratatui::prelude::Rect,
-        _world: &mut specs::World,
+        _app: &App,
     ) -> color_eyre::eyre::Result<()> {
         let layout = Layout::default()
             .direction(Direction::Horizontal)
@@ -47,7 +49,7 @@ impl Drawable for BottomBar {
         &self,
         frame: &mut ratatui::Frame,
         rect: ratatui::prelude::Rect,
-        _world: &mut specs::World,
+        _app: &App,
     ) -> color_eyre::eyre::Result<()> {
         let spans = vec![Span::default().content("[←↑↓→] Move ")];
         //todo add other shortcut

@@ -7,7 +7,7 @@ use crate::utils::Point;
 
 pub mod units;
 
-#[derive(Component, Clone, Copy)]
+#[derive(Component, Clone, Copy, Debug)]
 pub struct Position {
     pub x: i32,
     pub y: i32,

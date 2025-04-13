@@ -92,29 +92,27 @@ impl Map {
         }
     }
 
-    pub fn get_exits_from(&self, p: Point) -> Vec<Point> {
+    pub fn get_valid_neighbors(&self, p: Point) -> Vec<Point> {
         let mut points = Vec::new();
+        let (x, y) = p.to_xy();
 
-        let delta = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+        let mut delta = [(x + 1, y), (x - 1, y), (x, y - 1), (x, y + 1)];
 
-        for (dx, dy) in delta.iter() {
-            if let Some(p) = self.get_available_exit(p.x + dx, p.y + dy) {
-                points.push(p);
-            } else {
-                continue;
-            }
+        if (x + y) % 2 == 0 {
+            delta.reverse();
         }
 
+        for (x, y) in delta.iter() {
+            if self.is_valid_xy(*x, *y) {
+                points.push(Point::new(*x, *y));
+            }
+        }
         points
     }
 
-    fn get_available_exit(&self, x: i32, y: i32) -> Option<Point> {
+    fn is_valid_xy(&self, x: i32, y: i32) -> bool {
         let index = self.get_index_from_xy(x, y);
-        if self.is_inbound(x, y) && !self.tiles[index].block_path() {
-            Some(Point::from_xy(x, y))
-        } else {
-            None
-        }
+        self.is_inbound(x, y) && !self.tiles[index].is_blocked()
     }
 
     pub fn populate_blocked_tiles(&mut self) {

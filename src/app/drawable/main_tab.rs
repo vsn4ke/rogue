@@ -9,6 +9,7 @@ use ratatui::{
 use specs::prelude::*;
 
 use crate::{
+    app::{App, logger::Logger},
     components::{Position, Renderable},
     maps::Map,
     utils::Point,
@@ -19,7 +20,7 @@ use super::Drawable;
 pub struct MainTab;
 
 impl Drawable for MainTab {
-    fn draw(&self, frame: &mut Frame, rect: Rect, world: &mut World) -> Result<()> {
+    fn draw(&self, frame: &mut Frame, rect: Rect, app: &App) -> Result<()> {
         const CAMERA_WIDTH: i32 = 60;
         const CAMERA_HEIGHT: i32 = 30;
 
@@ -40,7 +41,7 @@ impl Drawable for MainTab {
             .split(layout_horizontal[1]);
 
         frame.render_widget(
-            camera(world, CAMERA_WIDTH, CAMERA_HEIGHT),
+            camera(&app.world, CAMERA_WIDTH, CAMERA_HEIGHT),
             layout_vertical_0[0],
         );
 
@@ -58,6 +59,7 @@ impl Drawable for MainTab {
             ..symbols::border::PLAIN
         };
 
+        frame.render_widget(logger(&app.world), layout_vertical_0[1]);
         frame.render_widget(
             Block::new()
                 .border_set(bottom_left_border_set)
@@ -97,7 +99,7 @@ impl Drawable for MainTab {
     }
 }
 
-fn camera(world: &mut World, width: i32, height: i32) -> Text<'_> {
+fn camera(world: &World, width: i32, height: i32) -> Text<'_> {
     let positions = world.read_storage::<Position>();
     let renderables = world.read_storage::<Renderable>();
     let map = world.fetch::<Map>();
@@ -140,6 +142,17 @@ fn camera(world: &mut World, width: i32, height: i32) -> Text<'_> {
         let y = (pos.y - dy) as usize;
 
         lines[y].spans[x] = render.draw();
+    }
+
+    Text::from(lines)
+}
+
+fn logger(world: &World) -> Text<'static> {
+    let logger = world.fetch::<Logger>();
+    let mut lines = Vec::new();
+
+    for log in logger.get_last_entries(8).iter() {
+        lines.push(Line::from("  ".to_owned() + log));
     }
 
     Text::from(lines)

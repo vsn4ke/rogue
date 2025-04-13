@@ -53,7 +53,11 @@ impl Tile {
         matches!(self.kind, TileKind::Wall)
     }
 
-    pub fn block_path(&self) -> bool {
+    pub fn is_blocked(&self) -> bool {
         matches!(self.kind, TileKind::Wall) || self.blocked
+    }
+
+    pub fn block_path(&self) -> bool {
+        matches!(self.kind, TileKind::Wall)
     }
 }

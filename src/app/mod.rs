@@ -10,6 +10,7 @@ use ratatui::{DefaultTerminal, Frame};
 use specs::prelude::*;
 
 pub mod drawable;
+pub mod logger;
 
 pub const TERMINAL_WIDTH: i32 = 80;
 pub const TERMINAL_HEIGHT: i32 = 50;
@@ -80,15 +81,14 @@ impl App {
 
         self.top_bar.selected_tab = self.tab;
 
-        self.top_bar.draw(frame, chunks_main[0], &mut self.world)?;
+        self.top_bar.draw(frame, chunks_main[0], self)?;
 
         match self.tab {
-            1 => self.main_tab.draw(frame, chunks_main[1], &mut self.world)?,
+            1 => self.main_tab.draw(frame, chunks_main[1], self)?,
             _ => bail!("unknow tab"),
         }
 
-        self.bottom_bar
-            .draw(frame, chunks_main[2], &mut self.world)?;
+        self.bottom_bar.draw(frame, chunks_main[2], self)?;
 
         Ok(())
     }

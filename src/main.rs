@@ -1,4 +1,4 @@
-use app::App;
+use app::{App, logger::Logger};
 use color_eyre::Result;
 use components::*;
 use maps::rooms_and_corridors;
@@ -63,6 +63,7 @@ fn main() -> Result<()> {
         .with(Viewshed::new(8))
         .build();
 
+    app.world.insert(Logger::default());
     app.world.insert(player_point);
     app.world.insert(map);
     app.run(terminal)?;
