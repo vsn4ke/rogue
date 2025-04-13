@@ -23,6 +23,7 @@ fn main() -> Result<()> {
     app.world.register::<Viewshed>();
     app.world.register::<Monster>();
     app.world.register::<Name>();
+    app.world.register::<BlockPath>();
     //app.world.register::<>();
 
     let (player_point, map) = rooms_and_corridors(20, 6, 10);
@@ -45,6 +46,7 @@ fn main() -> Result<()> {
             .with(Viewshed::new(7))
             .with(Monster)
             .with(Name::new(name))
+            .with(BlockPath)
             .build();
     }
 

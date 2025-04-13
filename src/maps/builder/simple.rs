@@ -13,16 +13,16 @@ pub fn simple_map() -> Map {
     );
 
     for x in 0..map.width {
-        let index = map.xy_to_index(x, 0);
+        let index = map.get_index_from_xy(x, 0);
         map.tiles[index].kind = TileKind::Wall;
-        let index = map.xy_to_index(x, map.height - 1);
+        let index = map.get_index_from_xy(x, map.height - 1);
         map.tiles[index].kind = TileKind::Wall;
     }
 
     for y in 0..map.height {
-        let index = map.xy_to_index(0, y);
+        let index = map.get_index_from_xy(0, y);
         map.tiles[index].kind = TileKind::Wall;
-        let index = map.xy_to_index(map.width - 1, y);
+        let index = map.get_index_from_xy(map.width - 1, y);
         map.tiles[index].kind = TileKind::Wall;
     }
 
@@ -31,7 +31,7 @@ pub fn simple_map() -> Map {
     for _ in 0..400 {
         let x = rng.random_range(1..map.width);
         let y = rng.random_range(1..map.height);
-        let index = map.xy_to_index(x, y);
+        let index = map.get_index_from_xy(x, y);
         if x != 30 && y != 40 {
             map.tiles[index].kind = TileKind::Wall;
         }

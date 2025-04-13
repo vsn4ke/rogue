@@ -13,17 +13,20 @@ use crate::{
 pub struct Map {
     pub width: i32,
     pub height: i32,
+    pub length: usize,
     pub tiles: Vec<Tile>,
     pub rooms: Vec<Rect>,
 }
 
 impl Map {
     pub fn new(width: i32, height: i32, tile: Tile) -> Self {
+        let length = (width * height) as usize;
         Self {
             width,
             height,
-            tiles: vec![tile; (width * height) as usize],
-            ..Default::default()
+            length,
+            tiles: vec![tile; length],
+            rooms: Vec::new(),
         }
     }
     pub fn is_inbound(&self, x: i32, y: i32) -> bool {
@@ -38,22 +41,28 @@ impl Map {
         self.is_inbound(x, y) && !self.tiles[index].is_opaque()
     }
 
-    pub fn xy_to_index(&self, x: i32, y: i32) -> usize {
+    pub fn get_index_from_xy(&self, x: i32, y: i32) -> usize {
         (y * self.width + x) as usize
     }
 
-    pub fn position_to_index(&self, pos: Position) -> usize {
-        self.xy_to_index(pos.x, pos.y)
+    pub fn get_index_from_position(&self, pos: Position) -> usize {
+        self.get_index_from_xy(pos.x, pos.y)
     }
 
-    pub fn point_to_index(&self, point: Point) -> usize {
-        self.xy_to_index(point.x, point.y)
+    pub fn get_index_from_point(&self, point: Point) -> usize {
+        self.get_index_from_xy(point.x, point.y)
     }
 
-    pub fn apply_room(&mut self, room: &Rect) {
+    pub fn get_point_from_index(&self, index: usize) -> Point {
+        let x = index as i32 % self.height;
+        let y = index as i32 / self.height;
+        Point { x, y }
+    }
+
+    pub fn insert_room(&mut self, room: &Rect) {
         for y in room.y1 + 1..=room.y2 {
             for x in room.x1 + 1..=room.x2 {
-                let index = self.xy_to_index(x, y);
+                let index = self.get_index_from_xy(x, y);
                 self.tiles[index].kind = TileKind::Floor;
             }
         }
@@ -72,7 +81,7 @@ impl Map {
                 continue;
             }
 
-            let index = self.xy_to_index(a, b);
+            let index = self.get_index_from_xy(a, b);
             self.tiles[index].kind = TileKind::Floor;
         }
     }
@@ -100,23 +109,24 @@ impl Map {
     }
 
     fn get_available_exit(&self, x: i32, y: i32) -> Option<Point> {
-        let index = self.xy_to_index(x, y);
+        let index = self.get_index_from_xy(x, y);
         if self.is_inbound(x, y) && !self.tiles[index].block_path() {
             Some(Point::from_xy(x, y))
         } else {
             None
         }
     }
+
+    pub fn populate_blocked_tiles(&mut self) {
+        for i in 0..self.length {
+            self.tiles[i].blocked = self.tiles[i].block_path();
+        }
+    }
 }
 
 impl Default for Map {
     fn default() -> Self {
-        Self {
-            width: TERMINAL_WIDTH,
-            height: TERMINAL_HEIGHT,
-            tiles: vec![Tile::default(); (TERMINAL_HEIGHT * TERMINAL_WIDTH) as usize],
-            rooms: Vec::new(),
-        }
+        Self::new(TERMINAL_WIDTH, TERMINAL_HEIGHT, Tile::default())
     }
 }
 

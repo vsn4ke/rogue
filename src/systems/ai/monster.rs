@@ -2,28 +2,39 @@ use specs::prelude::*;
 
 use crate::{
     components::{Monster, Name, Position, Viewshed},
-    utils::Point,
+    maps::Map,
+    utils::{Point, a_star::a_star},
 };
 
 pub struct MonsterAI;
 
 impl<'a> System<'a> for MonsterAI {
     type SystemData = (
+        ReadExpect<'a, Map>,
         ReadExpect<'a, Point>,
-        ReadStorage<'a, Viewshed>,
-        ReadStorage<'a, Position>,
+        WriteStorage<'a, Viewshed>,
+        WriteStorage<'a, Position>,
         ReadStorage<'a, Monster>,
         ReadStorage<'a, Name>,
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (player_position, viewsheds, positions, monsters, name) = data;
+        let (map, player_point, mut viewsheds, mut positions, monsters, name) = data;
 
-        for (viewshed, _position, _, name) in (&viewsheds, &positions, &monsters, &name).join() {
-            if viewshed.visible_tiles.contains(&player_position) {
-                // todo log instead of println
-                println!("{name} shouts insults.");
+        for (viewshed, monster_position, _, _name) in
+            (&mut viewsheds, &mut positions, &monsters, &name).join()
+        {
+            if !viewshed.visible_tiles.contains(&player_point) {
+                continue;
             }
+
+            let path = a_star(Point::from_position(*monster_position), *player_point, &map);
+            if path.is_empty() || path.len() < 2 {
+                continue;
+            }
+            monster_position.x = path[1].x;
+            monster_position.y = path[1].y;
+            viewshed.dirty = true;
         }
     }
 }

@@ -51,3 +51,6 @@ impl Renderable {
         }
     }
 }
+
+#[derive(Component)]
+pub struct BlockPath;

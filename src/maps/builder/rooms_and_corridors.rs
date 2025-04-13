@@ -23,7 +23,7 @@ pub fn rooms_and_corridors(max_rooms: i32, min_size: i32, max_size: i32) -> (Poi
         }
 
         if ok {
-            map.apply_room(&room);
+            map.insert_room(&room);
 
             if !map.rooms.is_empty() {
                 let (new_x, new_y) = room.center();

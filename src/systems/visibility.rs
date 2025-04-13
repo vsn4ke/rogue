@@ -34,7 +34,7 @@ impl<'a> System<'a> for Visibility {
             map.clear_visibility();
 
             for visible in viewshed.visible_tiles.iter() {
-                let index = map.xy_to_index(visible.x, visible.y);
+                let index = map.get_index_from_xy(visible.x, visible.y);
                 map.tiles[index].revealed = true;
                 map.tiles[index].visible = true;
             }
@@ -83,7 +83,7 @@ fn fov(center: Point, range: i32, map: &Map) -> Vec<Point> {
 
 fn add_visible_tile(map: &Map, tile_list: Vec<Point>, list_to_update: &mut Vec<Point>) {
     for tile in tile_list.iter() {
-        let index = map.point_to_index(*tile);
+        let index = map.get_index_from_point(*tile);
         if !map.is_point_inbound(*tile) {
             continue;
         }

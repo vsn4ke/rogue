@@ -1,8 +1,5 @@
-use std::collections::HashMap;
-
-use color_eyre::eyre::{Error, Result};
-
 use crate::{maps::Map, utils::Point};
+use std::collections::HashMap;
 
 #[derive(Clone, Copy, Debug)]
 struct Node {
@@ -13,19 +10,15 @@ struct Node {
 
 impl Node {
     pub fn new(p: Point, start: Point, goal: Point, parent: Option<Point>) -> Self {
-        let g = p.distance_to(start);
-        let h = p.distance_to(goal);
+        let g = p.distance_squared_to(start);
+        let h = p.distance_squared_to(goal);
         let f = g + h;
 
         Self { p, f, parent }
     }
 }
 
-pub fn a_star(start: Point, goal: Point, map: Map) -> Result<Vec<Point>> {
-    if !map.is_point_inbound(start) && !map.is_point_inbound(goal) {
-        return Err(Error::msg("points not inbounds"));
-    }
-
+pub fn a_star(start: Point, goal: Point, map: &Map) -> Vec<Point> {
     let mut opened_node: HashMap<Point, Node> = HashMap::new();
     let mut closed_node: HashMap<Point, Node> = HashMap::new();
     let mut path = Vec::new();
@@ -35,10 +28,10 @@ pub fn a_star(start: Point, goal: Point, map: Map) -> Result<Vec<Point>> {
         let mut lowest_f = i32::MAX;
         let mut current_node = None;
 
-        for node in opened_node.iter() {
-            if node.1.f < lowest_f {
-                lowest_f = node.1.f;
-                current_node = Some(*node.1);
+        for (_, node) in opened_node.iter() {
+            if node.f < lowest_f {
+                lowest_f = node.f;
+                current_node = Some(*node);
             }
         }
 
@@ -82,5 +75,5 @@ pub fn a_star(start: Point, goal: Point, map: Map) -> Result<Vec<Point>> {
         }
     }
 
-    Ok(path)
+    path.into_iter().rev().collect()
 }

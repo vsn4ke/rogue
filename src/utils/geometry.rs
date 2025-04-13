@@ -61,8 +61,11 @@ impl Point {
         (self.x, self.y)
     }
 
-    pub fn distance_to(self, p: Point) -> i32 {
-        (self.x - p.x).abs() + (self.y - p.y).abs()
+    pub fn distance_squared_to(self, p: Point) -> i32 {
+        let x = self.x - p.x;
+        let y = self.y - p.y;
+
+        x * x + y * y
     }
 }
 

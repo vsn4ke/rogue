@@ -13,6 +13,7 @@ pub struct Tile {
     pub kind: TileKind,
     pub revealed: bool,
     pub visible: bool,
+    pub blocked: bool,
 }
 
 impl Default for Tile {
@@ -21,6 +22,7 @@ impl Default for Tile {
             kind: TileKind::Wall,
             revealed: false,
             visible: false,
+            blocked: false,
         }
     }
 }
@@ -52,6 +54,6 @@ impl Tile {
     }
 
     pub fn block_path(&self) -> bool {
-        matches!(self.kind, TileKind::Wall)
+        matches!(self.kind, TileKind::Wall) || self.blocked
     }
 }

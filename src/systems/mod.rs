@@ -1,7 +1,9 @@
 pub use ai::*;
+pub use map_indexing::*;
 pub use visibility::*;
 
 pub mod ai;
+pub mod map_indexing;
 pub mod visibility;
 
 /***

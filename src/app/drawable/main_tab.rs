@@ -120,7 +120,7 @@ fn camera(world: &mut World, width: i32, height: i32) -> Text<'_> {
         for x in 1..width {
             let cx = x + dx;
             let cy = y + dy;
-            let index = map.xy_to_index(cx, cy);
+            let index = map.get_index_from_xy(cx, cy);
 
             if !map.is_inbound(cx, cy) || !map.tiles[index].revealed {
                 continue;
@@ -131,7 +131,7 @@ fn camera(world: &mut World, width: i32, height: i32) -> Text<'_> {
     }
 
     for (pos, render) in (&positions, &renderables).join() {
-        let index = map.position_to_index(*pos);
+        let index = map.get_index_from_position(*pos);
         if !map.tiles[index].visible {
             continue;
         }

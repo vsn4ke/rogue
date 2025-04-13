@@ -1,6 +1,6 @@
 use crate::player::input::player_input;
-use crate::systems::Visibility;
 use crate::systems::monster::MonsterAI;
+use crate::systems::{MapIndexing, Visibility};
 use color_eyre::Result;
 use color_eyre::eyre::bail;
 use drawable::bars::{BottomBar, TopBar};
@@ -103,6 +103,8 @@ impl App {
         visibility.run_now(&self.world);
         let mut monster = MonsterAI;
         monster.run_now(&self.world);
+        let mut map_indexing = MapIndexing;
+        map_indexing.run_now(&self.world);
         self.world.maintain();
     }
 }
