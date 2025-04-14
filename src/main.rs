@@ -1,7 +1,7 @@
 use app::{App, logger::Logger};
 use color_eyre::Result;
 use components::*;
-use maps::rooms_and_corridors;
+use maps::finalized::rooms_and_corridors;
 use ratatui::style::Color;
 use specs::prelude::*;
 use utils::Rng;
@@ -26,10 +26,12 @@ fn main() -> Result<()> {
     app.world.register::<BlockPath>();
     //app.world.register::<>();
 
-    let (player_point, map) = rooms_and_corridors(20, 6, 10);
+    let map = rooms_and_corridors();
+    let player_point = map.starter_point;
+
     //tmp: insert entities in rooms
     let mut rng = Rng::random_seed();
-    for room in map.rooms.iter().skip(1) {
+    for room in map.rooms.as_ref().unwrap().iter().skip(1) {
         let (glyph, name) = match rng.random_range(0..3) {
             1 => ('o', "Orc"),
             _ => ('g', "Goblin"),

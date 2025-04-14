@@ -7,7 +7,7 @@ pub use tile::*;
 use crate::{
     app::{TERMINAL_HEIGHT, TERMINAL_WIDTH},
     components::Position,
-    utils::{Point, Rect, order_value},
+    utils::{Point, Rect},
 };
 
 pub struct Map {
@@ -15,7 +15,8 @@ pub struct Map {
     pub height: i32,
     pub length: usize,
     pub tiles: Vec<Tile>,
-    pub rooms: Vec<Rect>,
+    pub rooms: Option<Vec<Rect>>,
+    pub starter_point: Point,
 }
 
 impl Map {
@@ -26,7 +27,8 @@ impl Map {
             height,
             length,
             tiles: vec![tile; length],
-            rooms: Vec::new(),
+            rooms: None,
+            starter_point: Point { x: 0, y: 0 },
         }
     }
     pub fn is_inbound(&self, x: i32, y: i32) -> bool {
@@ -57,33 +59,6 @@ impl Map {
         let x = index as i32 % self.height;
         let y = index as i32 / self.height;
         Point { x, y }
-    }
-
-    pub fn insert_room(&mut self, room: &Rect) {
-        for y in room.y1 + 1..=room.y2 {
-            for x in room.x1 + 1..=room.x2 {
-                let index = self.get_index_from_xy(x, y);
-                self.tiles[index].kind = TileKind::Floor;
-            }
-        }
-    }
-
-    pub fn draw_corridor(&mut self, a1: i32, a2: i32, b: i32, orientation: Orientation) {
-        let (a1, a2) = order_value(a1, a2);
-
-        for a in a1..=a2 {
-            let (a, b) = match orientation {
-                Orientation::Vertical => (b, a),
-                Orientation::Horizontal => (a, b),
-            };
-
-            if !self.is_inbound(a, b) {
-                continue;
-            }
-
-            let index = self.get_index_from_xy(a, b);
-            self.tiles[index].kind = TileKind::Floor;
-        }
     }
 
     pub fn clear_visibility(&mut self) {
@@ -126,9 +101,4 @@ impl Default for Map {
     fn default() -> Self {
         Self::new(TERMINAL_WIDTH, TERMINAL_HEIGHT, Tile::default())
     }
-}
-
-pub enum Orientation {
-    Vertical,
-    Horizontal,
 }

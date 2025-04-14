@@ -39,7 +39,7 @@ impl Rect {
     }
 }
 
-#[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
+#[derive(PartialEq, Eq, Hash, Clone, Copy, Debug, Default)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
