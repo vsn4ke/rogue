@@ -3,7 +3,7 @@ use crate::maps::InitialBuilder;
 pub struct Empty;
 
 impl Empty {
-    pub fn new() -> Box<Empty> {
+    pub fn new() -> Box<Self> {
         Box::new(Self)
     }
 }

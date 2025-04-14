@@ -1,3 +1,3 @@
-pub mod rooms_and_corridors;
+pub mod corridors;
 
-pub use rooms_and_corridors::RoomsAndCorridors;
+pub use corridors::*;
