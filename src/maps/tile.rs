@@ -54,10 +54,10 @@ impl Tile {
     }
 
     pub fn is_blocked(&self) -> bool {
-        matches!(self.kind, TileKind::Wall) || self.blocked
+        self.blocked_path() || self.blocked
     }
 
-    pub fn block_path(&self) -> bool {
+    pub fn blocked_path(&self) -> bool {
         matches!(self.kind, TileKind::Wall)
     }
 }

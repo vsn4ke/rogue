@@ -101,10 +101,10 @@ impl App {
     fn run_systems(&mut self) {
         let mut visibility = Visibility;
         visibility.run_now(&self.world);
-        let mut monster = MonsterAI;
-        monster.run_now(&self.world);
         let mut map_indexing = MapIndexing;
         map_indexing.run_now(&self.world);
+        let mut monster = MonsterAI;
+        monster.run_now(&self.world);
         self.world.maintain();
     }
 }

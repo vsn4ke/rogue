@@ -117,7 +117,7 @@ impl Map {
 
     pub fn populate_blocked_tiles(&mut self) {
         for i in 0..self.length {
-            self.tiles[i].blocked = self.tiles[i].block_path();
+            self.tiles[i].blocked = self.tiles[i].blocked_path();
         }
     }
 }

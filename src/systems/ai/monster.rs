@@ -24,21 +24,25 @@ impl<'a> System<'a> for MonsterAI {
         let (mut map, player_point, mut viewsheds, mut positions, monsters, name, mut logger) =
             data;
 
-        for (viewshed, monster_position, _, _name) in
+        for (viewshed, monster_position, _, name) in
             (&mut viewsheds, &mut positions, &monsters, &name).join()
         {
             if !viewshed.visible_tiles.contains(&player_point) {
                 continue;
             }
 
-            map.populate_blocked_tiles();
+            let monster_point = Point::from_position(*monster_position);
+            let distance = monster_point.distance_squared_to(*player_point);
+            if distance < 10 {
+                logger.add_entries(format!("{} shouts insults from {} meters", name, distance));
+                continue;
+            }
 
-            if let Some(path) =
-                AStar::search(Point::from_position(*monster_position), *player_point, &map)
-            {
-                logger.add_entries(format!("{:?}", path));
+            if let Some(path) = AStar::search(monster_point, *player_point, &map) {
                 monster_position.x = path[0].x;
                 monster_position.y = path[0].y;
+                let index = map.get_index_from_point(path[0]);
+                map.tiles[index].blocked = true;
             } else {
                 continue;
             }
