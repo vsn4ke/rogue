@@ -14,12 +14,7 @@ pub struct TopBar {
 }
 
 impl Drawable for TopBar {
-    fn draw(
-        &self,
-        frame: &mut ratatui::Frame,
-        rect: ratatui::prelude::Rect,
-        _app: &App,
-    ) -> color_eyre::eyre::Result<()> {
+    fn draw(&self, frame: &mut ratatui::Frame, rect: ratatui::prelude::Rect, _app: &App) {
         let layout = Layout::default()
             .direction(Direction::Horizontal)
             .constraints([Constraint::Length(3), Constraint::Min(1)])
@@ -39,21 +34,14 @@ impl Drawable for TopBar {
         }
 
         frame.render_widget(Text::from(Line::from(spans)), layout[1]);
-        Ok(())
     }
 }
 
 pub struct BottomBar;
 impl Drawable for BottomBar {
-    fn draw(
-        &self,
-        frame: &mut ratatui::Frame,
-        rect: ratatui::prelude::Rect,
-        _app: &App,
-    ) -> color_eyre::eyre::Result<()> {
+    fn draw(&self, frame: &mut ratatui::Frame, rect: ratatui::prelude::Rect, _app: &App) {
         let spans = vec![Span::default().content("[←↑↓→] Move ")];
         //todo add other shortcut
         frame.render_widget(Text::from(Line::from(spans)), rect);
-        Ok(())
     }
 }

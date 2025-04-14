@@ -60,6 +60,6 @@ impl InitialBuilder for RandomRooms {
             rooms[0].center_point()
         };
 
-        map.rooms = Some(rooms);
+        map.rooms = rooms;
     }
 }

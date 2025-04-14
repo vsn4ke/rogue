@@ -35,7 +35,18 @@ impl Pathfinding for BreadthFirst {
 
         while current != start {
             path.push(current);
-            current = came_from.get(&current).unwrap().unwrap();
+
+            let came_from = if let Some(c) = came_from.get(&current) {
+                c
+            } else {
+                continue;
+            };
+
+            current = if let Some(c) = came_from {
+                *c
+            } else {
+                continue;
+            };
         }
         path.reverse();
         Some(path)

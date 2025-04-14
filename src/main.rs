@@ -1,5 +1,4 @@
 use app::{App, logger::Logger};
-use color_eyre::Result;
 use components::*;
 use maps::finalized::rooms_and_corridors;
 use ratatui::style::Color;
@@ -13,7 +12,7 @@ pub mod player;
 pub mod systems;
 pub mod utils;
 
-fn main() -> Result<()> {
+fn main() {
     let terminal = ratatui::init();
     let mut app = App::default();
 
@@ -31,7 +30,8 @@ fn main() -> Result<()> {
 
     //tmp: insert entities in rooms
     let mut rng = Rng::random_seed();
-    for room in map.rooms.as_ref().unwrap().iter().skip(1) {
+
+    for room in map.rooms.iter().skip(1) {
         let (glyph, name) = match rng.random_range(0..3) {
             1 => ('o', "Orc"),
             _ => ('g', "Goblin"),
@@ -68,7 +68,6 @@ fn main() -> Result<()> {
     app.world.insert(Logger::default());
     app.world.insert(player_point);
     app.world.insert(map);
-    app.run(terminal)?;
+    app.run(terminal);
     ratatui::restore();
-    Ok(())
 }

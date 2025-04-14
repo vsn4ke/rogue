@@ -15,7 +15,7 @@ pub struct Map {
     pub height: i32,
     pub length: usize,
     pub tiles: Vec<Tile>,
-    pub rooms: Option<Vec<Rect>>,
+    pub rooms: Vec<Rect>,
     pub starter_point: Point,
 }
 
@@ -27,7 +27,7 @@ impl Map {
             height,
             length,
             tiles: vec![tile; length],
-            rooms: None,
+            rooms: Vec::new(),
             starter_point: Point { x: 0, y: 0 },
         }
     }

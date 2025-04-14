@@ -1,4 +1,3 @@
-use color_eyre::Result;
 use ratatui::{
     Frame,
     layout::{Constraint, Direction, Layout, Rect},
@@ -20,7 +19,7 @@ use super::Drawable;
 pub struct MainTab;
 
 impl Drawable for MainTab {
-    fn draw(&self, frame: &mut Frame, rect: Rect, app: &App) -> Result<()> {
+    fn draw(&self, frame: &mut Frame, rect: Rect, app: &App) {
         const CAMERA_WIDTH: i32 = 60;
         const CAMERA_HEIGHT: i32 = 30;
 
@@ -94,8 +93,6 @@ impl Drawable for MainTab {
                 .title(" Bottom Right Block "),
             layout_vertical_1[1],
         );
-
-        Ok(())
     }
 }
 

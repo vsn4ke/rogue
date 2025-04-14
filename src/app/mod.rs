@@ -1,8 +1,6 @@
 use crate::player::input::player_input;
 use crate::systems::monster::MonsterAI;
 use crate::systems::{MapIndexing, Visibility};
-use color_eyre::Result;
-use color_eyre::eyre::bail;
 use drawable::bars::{BottomBar, TopBar};
 use drawable::{Drawable, MainTab};
 use ratatui::layout::{Constraint, Direction, Layout};
@@ -48,26 +46,20 @@ impl Default for App {
 }
 
 impl App {
-    pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+    pub fn run(mut self, mut terminal: DefaultTerminal) {
         while self.state != AppState::Closing {
             if self.state == AppState::Running {
                 self.run_systems();
                 self.state = AppState::Paused
             } else {
-                self.handle_events()?;
+                player_input(&mut self);
             }
 
-            terminal.draw(|frame| {
-                if let Err(e) = self.draw(frame) {
-                    println!("unable to draw: {:?}", e);
-                }
-            })?;
+            if terminal.draw(|frame| self.draw(frame)).is_ok() {}
         }
-
-        Ok(())
     }
 
-    pub fn draw(&mut self, frame: &mut Frame) -> Result<()> {
+    pub fn draw(&mut self, frame: &mut Frame) {
         let frame_size = frame.area();
 
         let chunks_main = Layout::default()
@@ -81,21 +73,11 @@ impl App {
 
         self.top_bar.selected_tab = self.tab;
 
-        self.top_bar.draw(frame, chunks_main[0], self)?;
+        self.top_bar.draw(frame, chunks_main[0], self);
 
-        match self.tab {
-            1 => self.main_tab.draw(frame, chunks_main[1], self)?,
-            _ => bail!("unknow tab"),
-        }
+        self.main_tab.draw(frame, chunks_main[1], self);
 
-        self.bottom_bar.draw(frame, chunks_main[2], self)?;
-
-        Ok(())
-    }
-
-    pub fn handle_events(&mut self) -> Result<()> {
-        player_input(self)?;
-        Ok(())
+        self.bottom_bar.draw(frame, chunks_main[2], self);
     }
 
     fn run_systems(&mut self) {

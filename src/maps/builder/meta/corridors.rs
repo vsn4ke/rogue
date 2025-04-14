@@ -13,13 +13,14 @@ impl Corridors {
 
 impl MetaBuilder for Corridors {
     fn draw(&self, map: &mut Map) {
-        if map.rooms.is_none() {
+        let rooms = if !map.rooms.is_empty() && map.rooms.len() > 1 {
+            map.rooms.clone()
+        } else {
             return;
-        }
-
-        let rooms = map.rooms.as_mut().unwrap().clone();
+        };
 
         let last_room = rooms.len() - 1;
+
         for i in 0..=last_room {
             if i + 1 > last_room {
                 break;
