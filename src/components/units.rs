@@ -44,3 +44,22 @@ impl Display for Name {
         write!(f, "{}", self.name)
     }
 }
+
+#[derive(Component)]
+pub struct CombatStats {
+    pub max_hp: i32,
+    pub current_hp: i32,
+    pub defense: i32,
+    pub attack: i32,
+}
+
+impl CombatStats {
+    pub fn new(max_hp: i32, defense: i32, attack: i32) -> Self {
+        Self {
+            max_hp,
+            current_hp: max_hp,
+            defense,
+            attack,
+        }
+    }
+}

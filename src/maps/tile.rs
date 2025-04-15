@@ -1,4 +1,5 @@
 use ratatui::style::Color;
+use specs::Entity;
 
 use crate::components::Renderable;
 
@@ -8,12 +9,13 @@ pub enum TileKind {
     Floor,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 pub struct Tile {
     pub kind: TileKind,
     pub revealed: bool,
     pub visible: bool,
     pub blocked: bool,
+    pub content: Vec<Entity>,
 }
 
 impl Default for Tile {
@@ -23,6 +25,7 @@ impl Default for Tile {
             revealed: false,
             visible: false,
             blocked: false,
+            content: Vec::new(),
         }
     }
 }

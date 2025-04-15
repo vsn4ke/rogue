@@ -23,6 +23,7 @@ fn main() {
     app.world.register::<Monster>();
     app.world.register::<Name>();
     app.world.register::<BlockPath>();
+    app.world.register::<CombatStats>();
     //app.world.register::<>();
 
     let map = rooms_and_corridors();
@@ -32,9 +33,9 @@ fn main() {
     let mut rng = Rng::random_seed();
 
     for room in map.rooms.iter().skip(1) {
-        let (glyph, name) = match rng.random_range(0..3) {
-            1 => ('o', "Orc"),
-            _ => ('g', "Goblin"),
+        let (glyph, name, stats) = match rng.random_range(0..3) {
+            1 => ('o', "Orc", CombatStats::new(20, 2, 4)),
+            _ => ('g', "Goblin", CombatStats::new(18, 1, 3)),
         };
 
         app.world
@@ -49,6 +50,7 @@ fn main() {
             .with(Monster)
             .with(Name::new(name))
             .with(BlockPath)
+            .with(stats)
             .build();
     }
 
@@ -63,6 +65,7 @@ fn main() {
         .with(Player)
         .with(Name::new("Player"))
         .with(Viewshed::new(8))
+        .with(CombatStats::new(50, 2, 6))
         .build();
 
     app.world.insert(Logger::default());

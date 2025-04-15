@@ -95,6 +95,12 @@ impl Map {
             self.tiles[i].blocked = self.tiles[i].blocked_path();
         }
     }
+
+    pub fn clear_tiles_content(&mut self) {
+        for i in 0..self.length {
+            self.tiles[i].content.clear();
+        }
+    }
 }
 
 impl Default for Map {

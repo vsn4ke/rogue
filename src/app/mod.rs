@@ -1,4 +1,4 @@
-use crate::player::input::player_input;
+use crate::player::player_input;
 use crate::systems::monster::MonsterAI;
 use crate::systems::{MapIndexing, Visibility};
 use drawable::bars::{BottomBar, TopBar};
