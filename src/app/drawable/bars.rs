@@ -1,10 +1,13 @@
 use ratatui::{
     layout::{Constraint, Direction, Layout},
-    style::{Color, Style},
+    style::Style,
     text::{Line, Span, Text},
 };
 
-use crate::app::App;
+use crate::{
+    app::App,
+    colors::{YELLOW2, c},
+};
 
 use super::Drawable;
 
@@ -25,7 +28,7 @@ impl Drawable for TopBar {
             let span = Span::default()
                 .content(format!("[F{i}] {tab_name}     "))
                 .style(if i == self.selected_tab {
-                    Style::default().fg(Color::Yellow)
+                    Style::default().fg(c(YELLOW2))
                 } else {
                     Style::default()
                 });

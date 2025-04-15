@@ -2,6 +2,7 @@ pub mod builder;
 pub mod tile;
 
 pub use builder::*;
+use specs::Entity;
 pub use tile::*;
 
 use crate::{
@@ -17,6 +18,7 @@ pub struct Map {
     pub tiles: Vec<Tile>,
     pub rooms: Vec<Rect>,
     pub starter_point: Point,
+    pub content: Vec<Vec<Entity>>,
 }
 
 impl Map {
@@ -29,6 +31,7 @@ impl Map {
             tiles: vec![tile; length],
             rooms: Vec::new(),
             starter_point: Point { x: 0, y: 0 },
+            content: vec![Vec::new(); length],
         }
     }
     pub fn is_inbound(&self, x: i32, y: i32) -> bool {
@@ -98,7 +101,7 @@ impl Map {
 
     pub fn clear_tiles_content(&mut self) {
         for i in 0..self.length {
-            self.tiles[i].content.clear();
+            self.content[i].clear();
         }
     }
 }

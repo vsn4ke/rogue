@@ -3,7 +3,10 @@ use specs::prelude::*;
 use specs_derive::Component;
 pub use units::*;
 
-use crate::utils::Point;
+use crate::{
+    colors::{BLACK, WHITE, c},
+    utils::Point,
+};
 
 pub mod units;
 
@@ -33,8 +36,8 @@ impl Default for Renderable {
     fn default() -> Renderable {
         Renderable {
             glyph: ' ',
-            fg: Color::White,
-            bg: Color::Black,
+            fg: c(WHITE),
+            bg: c(BLACK),
         }
     }
 }

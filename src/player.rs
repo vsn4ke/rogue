@@ -39,7 +39,7 @@ fn try_move_player(dx: i32, dy: i32, app: &mut App) {
     for (_, pos, viewshed) in (&player, &mut pos, &mut viewsheds).join() {
         let index = map.get_index_from_xy(pos.x + dx, pos.y + dy);
 
-        for potential_target in map.tiles[index].content.iter() {
+        for potential_target in map.content[index].iter() {
             if combat_stats.get(*potential_target).is_some() {
                 logger.add_entries("Attack!");
                 return;

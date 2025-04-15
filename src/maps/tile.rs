@@ -1,7 +1,4 @@
-use ratatui::style::Color;
-use specs::Entity;
-
-use crate::components::Renderable;
+use crate::{colors::*, components::Renderable};
 
 #[derive(Clone, PartialEq, Copy)]
 pub enum TileKind {
@@ -15,7 +12,6 @@ pub struct Tile {
     pub revealed: bool,
     pub visible: bool,
     pub blocked: bool,
-    pub content: Vec<Entity>,
 }
 
 impl Default for Tile {
@@ -25,7 +21,6 @@ impl Default for Tile {
             revealed: false,
             visible: false,
             blocked: false,
-            content: Vec::new(),
         }
     }
 }
@@ -35,18 +30,18 @@ impl Tile {
         let mut renderable = match self.kind {
             TileKind::Wall => Renderable {
                 glyph: '#',
-                fg: Color::Green,
+                fg: c(GREEN6),
                 ..Default::default()
             },
             TileKind::Floor => Renderable {
                 glyph: '.',
-                fg: Color::Green,
+                fg: c(GREEN4),
                 ..Default::default()
             },
         };
 
         if !self.visible {
-            renderable.fg = Color::DarkGray;
+            renderable.fg = c(GRAY6);
         }
 
         renderable

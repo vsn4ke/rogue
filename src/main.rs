@@ -1,11 +1,12 @@
 use app::{App, logger::Logger};
+use colors::*;
 use components::*;
 use maps::finalized::rooms_and_corridors;
-use ratatui::style::Color;
 use specs::prelude::*;
 use utils::Rng;
 
 pub mod app;
+pub mod colors;
 pub mod components;
 pub mod maps;
 pub mod player;
@@ -43,7 +44,7 @@ fn main() {
             .with(room.center_position())
             .with(Renderable {
                 glyph,
-                fg: Color::Red,
+                fg: c(RED5),
                 ..Default::default()
             })
             .with(Viewshed::new(7))
@@ -58,8 +59,8 @@ fn main() {
         .create_entity()
         .with(Renderable {
             glyph: '@',
-            fg: Color::Black,
-            bg: Color::Red,
+            fg: c(BLACK),
+            bg: c(RED1),
         })
         .with(Position::from_point(player_point))
         .with(Player)

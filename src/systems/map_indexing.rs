@@ -25,7 +25,7 @@ impl<'a> System<'a> for MapIndexing {
             let index = map.get_index_from_position(*position);
 
             map.tiles[index].blocked = blockers.get(entity).is_some();
-            map.tiles[index].content.push(entity);
+            map.content[index].push(entity);
         }
     }
 }
