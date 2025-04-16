@@ -58,4 +58,8 @@ impl Tile {
     pub fn blocked_path(&self) -> bool {
         matches!(self.kind, TileKind::Wall)
     }
+
+    pub fn is_walkable(&self) -> bool {
+        matches!(self.kind, TileKind::Floor)
+    }
 }

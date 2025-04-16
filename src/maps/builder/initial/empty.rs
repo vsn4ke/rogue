@@ -1,4 +1,4 @@
-use crate::maps::InitialBuilder;
+use crate::{maps::InitialBuilder, utils::Rng};
 
 pub struct Empty;
 
@@ -9,7 +9,7 @@ impl Empty {
 }
 
 impl InitialBuilder for Empty {
-    fn draw(&self, _map: &mut crate::maps::Map) {
+    fn draw(&self, _rng: &mut Rng, _map: &mut crate::maps::Map) {
         // do nothing
     }
 }

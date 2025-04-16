@@ -2,6 +2,8 @@ pub mod finalized;
 pub mod initial;
 pub mod meta;
 
+use crate::utils::Rng;
+
 use super::Map;
 
 pub struct MapBuilder {
@@ -22,13 +24,13 @@ impl MapBuilder {
         self
     }
 
-    pub fn build(self) -> Map {
+    pub fn build(self, rng: &mut Rng) -> Map {
         let mut map = Map::default();
 
-        self.starter.draw(&mut map);
+        self.starter.draw(rng, &mut map);
 
         for i in 0..self.builders.len() {
-            self.builders[i].draw(&mut map);
+            self.builders[i].draw(rng, &mut map);
         }
 
         map
@@ -36,8 +38,8 @@ impl MapBuilder {
 }
 
 pub trait InitialBuilder {
-    fn draw(&self, map: &mut Map);
+    fn draw(&self, rng: &mut Rng, map: &mut Map);
 }
 pub trait MetaBuilder {
-    fn draw(&self, map: &mut Map);
+    fn draw(&self, rng: &mut Rng, map: &mut Map);
 }

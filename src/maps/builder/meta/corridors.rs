@@ -12,7 +12,7 @@ impl Corridors {
 }
 
 impl MetaBuilder for Corridors {
-    fn draw(&self, map: &mut Map) {
+    fn draw(&self, rng: &mut Rng, map: &mut Map) {
         let rooms = if !map.rooms.is_empty() && map.rooms.len() > 1 {
             map.rooms.clone()
         } else {
@@ -28,7 +28,6 @@ impl MetaBuilder for Corridors {
             let (new_x, new_y) = rooms[i].center();
             let (prev_x, prev_y) = rooms[i + 1].center();
 
-            let mut rng = Rng::random_seed();
             let (middle_x, middle_y) = if rng.random_range(0..2) == 1 {
                 (new_x, prev_y)
             } else {

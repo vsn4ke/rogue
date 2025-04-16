@@ -1,6 +1,7 @@
 use crate::player::player_input;
 use crate::systems::monster::MonsterAI;
 use crate::systems::{MapIndexing, Visibility};
+use crate::utils::Rng;
 use drawable::bars::{BottomBar, TopBar};
 use drawable::{Drawable, MainTab};
 use ratatui::layout::{Constraint, Direction, Layout};
@@ -20,6 +21,8 @@ pub struct App {
     pub main_tab: MainTab,
     pub top_bar: TopBar,
     pub bottom_bar: BottomBar,
+    pub map_rng: Rng,
+    pub rng: Rng,
 }
 
 #[derive(PartialEq)]
@@ -41,6 +44,8 @@ impl Default for App {
                 selected_tab: 1,
             },
             bottom_bar: BottomBar,
+            map_rng: Rng::random_seed(),
+            rng: Rng::random_seed(),
         }
     }
 }

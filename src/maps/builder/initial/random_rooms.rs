@@ -6,6 +6,7 @@ pub struct RandomRooms {
     min_size: i32,
     max_size: i32,
 }
+
 impl RandomRooms {
     pub fn new(max_rooms: i32, min_size: i32, max_size: i32) -> Box<RandomRooms> {
         Box::new(RandomRooms {
@@ -17,9 +18,7 @@ impl RandomRooms {
 }
 
 impl InitialBuilder for RandomRooms {
-    fn draw(&self, map: &mut Map) {
-        let mut rng = Rng::random_seed();
-
+    fn draw(&self, rng: &mut Rng, map: &mut Map) {
         let mut rooms = Vec::new();
 
         for _ in 0..self.max_rooms {
