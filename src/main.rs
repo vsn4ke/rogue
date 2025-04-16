@@ -17,7 +17,7 @@ pub mod utils;
 fn main() {
     let terminal = ratatui::init();
     let mut app = App {
-        map_rng: Rng::new(1),
+        rng: Rng::from_string("Roguelike Dungeon"),
         ..Default::default()
     };
 
@@ -32,7 +32,7 @@ fn main() {
     //app.world.register::<>();
 
     //-- todo move away from main
-    let map = rooms_and_corridors(&mut app.map_rng);
+    let map = rooms_and_corridors(&mut app.rng);
     spawn_monsters(&mut app.rng, &mut app.world, &map);
     //-- todo
 

@@ -21,7 +21,6 @@ pub struct App {
     pub main_tab: MainTab,
     pub top_bar: TopBar,
     pub bottom_bar: BottomBar,
-    pub map_rng: Rng,
     pub rng: Rng,
 }
 
@@ -44,7 +43,6 @@ impl Default for App {
                 selected_tab: 1,
             },
             bottom_bar: BottomBar,
-            map_rng: Rng::random_seed(),
             rng: Rng::random_seed(),
         }
     }
