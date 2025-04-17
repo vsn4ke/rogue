@@ -20,6 +20,8 @@ pub fn player_input(app: &mut App) {
                 KeyCode::Down => try_move_player(0, 1, app),
                 KeyCode::Left => try_move_player(-1, 0, app),
                 KeyCode::Right => try_move_player(1, 0, app),
+
+                KeyCode::F(i) => app.tab = i as usize, // todo clamp the value based on tabs number
                 _ => {}
             },
             _ => {}

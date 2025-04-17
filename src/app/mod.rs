@@ -3,9 +3,9 @@ use crate::systems::monster::MonsterAI;
 use crate::systems::{MapIndexing, Visibility};
 use crate::utils::Rng;
 use drawable::bars::{BottomBar, TopBar};
-use drawable::{Drawable, MainTab};
-use ratatui::layout::{Constraint, Direction, Layout};
-use ratatui::{DefaultTerminal, Frame};
+use drawable::{MainTab, layout};
+use logger::Logger;
+use ratatui::DefaultTerminal;
 use specs::prelude::*;
 
 pub mod drawable;
@@ -58,29 +58,14 @@ impl App {
                 player_input(&mut self);
             }
 
-            if terminal.draw(|frame| self.draw(frame)).is_ok() {}
+            if terminal
+                .draw(|frame| layout::draw(&mut self, frame))
+                .is_err()
+            {
+                let mut logger = self.world.fetch_mut::<Logger>();
+                logger.add_entries("Err: frame skipped");
+            }
         }
-    }
-
-    pub fn draw(&mut self, frame: &mut Frame) {
-        let frame_size = frame.area();
-
-        let chunks_main = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(2), //future tabs bar
-                Constraint::Min(2),
-                Constraint::Length(2), //future nav bar
-            ])
-            .split(frame_size);
-
-        self.top_bar.selected_tab = self.tab;
-
-        self.top_bar.draw(frame, chunks_main[0], self);
-
-        self.main_tab.draw(frame, chunks_main[1], self);
-
-        self.bottom_bar.draw(frame, chunks_main[2], self);
     }
 
     fn run_systems(&mut self) {

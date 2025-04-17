@@ -43,7 +43,7 @@ impl Drawable for TopBar {
 pub struct BottomBar;
 impl Drawable for BottomBar {
     fn draw(&self, frame: &mut ratatui::Frame, rect: ratatui::prelude::Rect, _app: &App) {
-        let spans = vec![Span::default().content("[←↑↓→] Move ")];
+        let spans = vec![Span::default().content(" [←↑↓→] Move ")];
         //todo add other shortcut
         frame.render_widget(Text::from(Line::from(spans)), rect);
     }
