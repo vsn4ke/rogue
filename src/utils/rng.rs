@@ -29,9 +29,7 @@ impl Rng {
     }
 
     pub fn from_string(string: impl Into<String>) -> Self {
-        let s: String = string.into();
-
-        Self::new(hash_string(s))
+        Self::new(hash_string(string.into()))
     }
 
     fn next_state_64(&mut self) -> u64 {
@@ -57,8 +55,7 @@ impl Rng {
     }
 
     pub fn random_range_from_seed(self, seed: u64, range: Range<i32>) -> i32 {
-        let modulo = range.end - range.start;
-        (seed as i32).abs() % modulo + range.start
+        (seed as i32).abs() % (range.end - range.start) + range.start
     }
 }
 
