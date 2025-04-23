@@ -40,9 +40,7 @@ impl Pathfinding for AStar {
                 }
             }
 
-            let current_node = if let Some(c) = current_node {
-                c
-            } else {
+            let Some(current_node) = current_node else {
                 break;
             };
 
@@ -59,17 +57,15 @@ impl Pathfinding for AStar {
                 let mut nodelist = Vec::new();
                 loop {
                     nodelist.push(current_position);
-                    let node = if let Some(n) = closed_node.get(&current_position) {
-                        n
-                    } else {
+                    let Some(node) = closed_node.get(&current_position) else {
                         break;
                     };
 
-                    current_position = if let Some(n) = node.parent {
-                        n
-                    } else {
+                    let Some(parent) = node.parent else {
                         break;
                     };
+
+                    current_position = parent;
                 }
 
                 path = nodelist;

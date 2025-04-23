@@ -57,6 +57,10 @@ impl Rng {
     pub fn random_range_from_seed(self, seed: u64, range: Range<i32>) -> i32 {
         (seed as i32).abs() % (range.end - range.start) + range.start
     }
+
+    pub fn d20(&mut self) -> i32 {
+        ((self.next_state_64() as i128 * 20) >> 64) as i32
+    }
 }
 
 fn hash_string(string: impl Into<String>) -> u64 {

@@ -38,14 +38,14 @@ impl<'a> System<'a> for MonsterAI {
                 continue;
             }
 
-            if let Some(path) = AStar::search(monster_point, *player_point, &map) {
-                monster_position.x = path[0].x;
-                monster_position.y = path[0].y;
-                let index = map.get_index_from_point(path[0]);
-                map.tiles[index].blocked = true;
-            } else {
+            let Some(path) = AStar::search(monster_point, *player_point, &map) else {
                 continue;
-            }
+            };
+
+            monster_position.x = path[0].x;
+            monster_position.y = path[0].y;
+            let index = map.get_index_from_point(path[0]);
+            map.tiles[index].blocked = true;
 
             viewshed.dirty = true;
         }
